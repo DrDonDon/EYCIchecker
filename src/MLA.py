@@ -61,6 +61,7 @@ def get_EYCI_ESTLI_data():
     query_string = get_query_string(DATE_RANGE, Guid_dict[report_name])
     response = requests.get(Base_URL + query_string)
     return_value = response.json()['ReturnValue']
+    print(return_value)
 
     #make element tree from xml string
     root = ET.fromstring(return_value)
