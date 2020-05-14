@@ -35,10 +35,12 @@ ESTLI_signals = []
 try:
     for key,value in EYCI_dict.items():
         s = {'t': key, 'price': float(value)}
+        print(s)
         EYCI_signals.append(s)
     for key,value in ESTLI_dict.items():
         s = {'t': key, 'price': float(value)}
         ESTLI_signals.append(s)
+        print(s)
 
     print(EYCI_signals)
     amphora_api.amphorae_upload_signal_batch(EYCI_id, request_body = EYCI_signals)
