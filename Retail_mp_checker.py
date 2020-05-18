@@ -20,6 +20,18 @@ import time
 import datetime
 import os
 from src.MLA import *
+import time
+import mlflow
+
+## Set up log metrics
+start = time.time()
+sep='_'
+mlflow.set_tracking_uri("http://aci-mlflow-dns.australiaeast.azurecontainer.io:5000/")
+runName = sep.join(['Job_at',str(datetime.utcnow())])
+mlflow.start_run(experiment_id=7, run_name =runName)
+mlflow.log_metric("time_to_complete", 0)
+mlflow.log_metric("ensembles_simulated",0)
+mlflow.log_metric("run_complete",0)
 
 report_name = "Australia - Retail meat prices - Quarterly"
 Guid_dict = {}
@@ -73,6 +85,13 @@ calroot = root
 for i in range(4):
     calroot = calroot[0]
     print(calroot.tag)
+    
+# Wrap up MLflow loggins    
+end = time.time()
+mlflow.log_metric("time_to_complete", end - start) 
+mlflow.log_metric("run_complete",1)
+mlflow.end_run() 
+    
 
 # for child in calroot:
 #     collection_node = child
