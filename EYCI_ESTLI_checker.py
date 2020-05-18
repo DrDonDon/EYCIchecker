@@ -5,6 +5,17 @@ from amphora_client.rest import ApiException
 from amphora_client.configuration import Configuration
 import os
 from src.MLA import *
+import mlflow
+import time
+
+## Set up log metrics
+start = time.time()
+sep='_'
+mlflow.set_tracking_uri("http://aci-mlflow-dns.australiaeast.azurecontainer.io:5000/")
+runName = sep.join(['Job_at',str(datetime.utcnow())])
+mlflow.start_run(experiment_id=7, run_name =runName)
+mlflow.log_metric("time_to_complete", 0)
+mlflow.log_metric("run_complete",0)
 
 EYCI_id = "1bd74490-ccf6-43d1-99f1-ef53f60c293c"
 ESTLI_id = "35f32a02-5abf-417b-a8ec-40dc7ac3ff7d"
@@ -47,3 +58,10 @@ try:
     amphora_api.amphorae_upload_signal_batch(ESTLI_id, request_body = ESTLI_signals)
 except ApiException as e:
     print("Exception when calling AmphoraeApi: %s\n" % e)
+
+    
+# Wrap up MLflow loggins    
+end = time.time()
+mlflow.log_metric("time_to_complete", end - start) 
+mlflow.log_metric("run_complete",1)
+mlflow.end_run()     
