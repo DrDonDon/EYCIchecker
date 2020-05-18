@@ -7,6 +7,7 @@ import os
 from src.MLA import *
 import mlflow
 import time
+from datetime import datetime
 
 ## Set up log metrics
 start = time.time()
