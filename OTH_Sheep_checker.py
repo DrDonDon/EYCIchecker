@@ -6,6 +6,18 @@ from amphora_client.configuration import Configuration
 import os
 from src.MLA import *
 
+import mlflow
+import time
+
+## Set up log metrics
+start = time.time()
+sep='_'
+mlflow.set_tracking_uri("http://aci-mlflow-dns.australiaeast.azurecontainer.io:5000/")
+runName = sep.join(['Job_at',str(datetime.utcnow())])
+mlflow.start_run(experiment_id=7, run_name =runName)
+mlflow.log_metric("time_to_complete", 0)
+mlflow.log_metric("run_complete",0)
+
 L_lamb_id = "fdf6cc1a-c2bc-4d22-a013-f697e6e16771"
 M_T_lamb_id = "f8ea22f4-b08e-46e3-abb4-8721478b9f94"
 H_T_lamb_id = "5fa13614-ac5a-4af7-a908-c6f8414f4b26"
@@ -42,3 +54,10 @@ for i in range(len(dict_list)):
         amphora_api.amphorae_upload_signal_batch(id_list[i], request_body = signals)
     except ApiException as e:
         print("Exception when calling AmphoraeApi: %s\n" % e)
+
+        
+# Wrap up MLflow loggins    
+end = time.time()
+mlflow.log_metric("time_to_complete", end - start) 
+mlflow.log_metric("run_complete",1)
+mlflow.end_run()         
