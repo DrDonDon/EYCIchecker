@@ -23,11 +23,12 @@ from src.MLA import *
 import time
 import mlflow
 
+
 ## Set up log metrics
 start = time.time()
 sep='_'
 mlflow.set_tracking_uri("http://aci-mlflow-dns.australiaeast.azurecontainer.io:5000/")
-runName = sep.join(['Job_at',str(datetime.utcnow())])
+runName = sep.join(['Job_at',str(datetime.datetime.utcnow())])
 mlflow.start_run(experiment_id=7, run_name =runName)
 mlflow.log_metric("time_to_complete", 0)
 mlflow.log_metric("ensembles_simulated",0)
